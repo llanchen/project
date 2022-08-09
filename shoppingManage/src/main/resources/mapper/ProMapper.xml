@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seehope.dao.ProMapper">
+  <select id="findAllPros" resultType="pro">
+      select * from pro
+  </select>
+
+    <select id="findProbyId" resultType="pro">
+        select * from pro where id=#{id}
+    </select>
+
+    <delete id="delPro">
+        delete from pro where id=#{id}
+    </delete>
+
+    <insert id="addPro" parameterType="pro">
+        insert into pro(pName,pSn,pNum,mPrice,iPrice,pDesc,pImg,pubTime,isShow,isHot,cid,xqImg) values
+        (#{pName},#{pSn},#{pNum},#{mPrice},#{iPrice},#{pDesc},#{pImg},#{pubTime},#{isShow},#{isHot},#{cid},#{xqImg})
+    </insert>
+
+    <update id="updatePro" parameterType="pro">
+        update pro set pName=#{pName},pSn=#{pSn},pNum=#{pNum},mPrice=#{mPrice},iPrice=#{iPrice},
+        pDesc=#{pDesc},pImg=#{pImg},pubTime=#{pubTime},isShow=#{isShow},isHot=#{isHot},cid=#{cid},xqImg=#{xqImg}
+        where id=#{id}
+    </update>
+
+
+
+</mapper>

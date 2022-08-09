@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "net.seehope",
+      "type": "common.properties.ProjectProperties",
+      "sourceType": "common.properties.ProjectProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "net.seehope.allowed-origins",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "common.properties.ProjectProperties"
+    }
+  ],
+  "hints": []
+}

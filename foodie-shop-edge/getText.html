@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+	<body>
+		<div class="cont-scrollbar ps-container" id="cont-scrollbar">
+			<div class="scroller content" style="min-height: 821px;">  <div class="cont-title-wrap wm" id="imagetext-content">   <div class="cont-title">6-5 总结复习</div>             <div class="cont-desc">                                                               <div class="imagetext-content">                             <div class="text-markdown">                                 <div class="cl-preview-section"><p>到这里，我们就已经开发完成电商业务的主体功能，我们来一次阶段性总结。<br>
+		前面我们主要是针对电商网站的门户端做的开发，由于我们是Java服务端课程，所以我们只需关注后端接口的实现即可，又因为我们的项目是前后端分离的，所以前端代码可以提供给大家，大家如果对前端源码比较感兴趣，也可以课后读一读。<br>
+		接下来我们先一起来看一个思维导图，然后再梳理整体的内容：<br>
+		<img src="//climg.mukewang.com/5daff1fe08064cac11491046.jpg" alt="图片描述"></p>
+		</div><div class="cl-preview-section"><ol>
+		<li>首先我们开发了用户登录注册功能，注册时用户信息的入库，登录时用户信息的检索。而且我们必须要做的一点就是，用户密码必须加密，否则万一泄露了可不得了噢~！<br>
+		<img src="//climg.mukewang.com/5daff25d0879b41c10070448.jpg" alt="图片描述"></li>
+		<li>为了便于测试，也便于和前端开发人员的沟通，我们可以通过整合<code>Swagger2</code>构建在线接口文档，大大提高编写本地文档的效率。<br>
+		<img src="//climg.mukewang.com/5daff28a0899024913100662.jpg" alt="图片描述"></li>
+		<li>在用户注册或登录以后，相关的信息是需要保存到会话<code>Session</code>中的，但是由于我们是前后端分离架构模式，并且后续也会进化成集群以及分布式，那么单机<code>Tomcat</code>的<code>httpSession</code>就不管用了，所以我们暂时没有使用会话，我们会在后面学习完<code>Redis</code>以后，再来实现分布式会话。除了<code>Session</code>以外，还有<code>Cookie</code>，用户的一些基本信息可以放在<code>Cookie</code>中，这样前端页面就可以根据用户信息来判断用户是否已经登录，这样就可以在前端页面显示用户的登录信息了。像京东这样的大公司也是如此设计的。<br>
+		<img src="//climg.mukewang.com/5daff32108681ee902860174.jpg" alt="图片描述"></li>
+		<li>日志在每个系统中都是十分重要的，便于运维查看以及排错。所以我们整合了<code>log4j</code>，但是<code>SpringBoot</code>默认自带了日志，所以需要在pom中移除自带日志框架即可。日志的使用方式如下，有4种常用的级别提供输出。</li>
+		</ol>
+		</div><div class="cl-preview-section"><pre class="language-java normal-code"><code class="prism  language-java"><span class="token keyword">final</span> <span class="token keyword">static</span> Logger logger <span class="token operator">=</span> LoggerFactory<span class="token punctuation">.</span><span class="token function">getLogger</span><span class="token punctuation">(</span>HelloController<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		logger<span class="token punctuation">.</span><span class="token function">debug</span><span class="token punctuation">(</span><span class="token string">"debug: hello~"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">"info: hello~"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		logger<span class="token punctuation">.</span><span class="token function">warn</span><span class="token punctuation">(</span><span class="token string">"warn: hello~"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		logger<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">"error: hello~"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		</code><ul class="pre-numbering"><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li></ul><div class="code-top">                                <div class="left"><span>代码块</span><i class="imv2-code"></i></div>                                <div class="right">                                    <span class="preview">预览</span><span class="copy">复制<textarea type="text" class="code" style="width:1px;height:1px;"></textarea></span>                                    <div class="copysuccess hide">复制成功！</div>                                </div>                            </div></pre>
+		</div><div class="cl-preview-section"><p>不仅在程序中各个地方可以打印日志，也可以在数据层打印MyBatis的Sql执行语句，因为这会更有利于我们调试。</p>
+		</div><div class="cl-preview-section"><pre class="language-java normal-code"><code class="prism  language-java">mybatis<span class="token operator">:</span>
+		      configuration<span class="token operator">:</span>
+		        log<span class="token operator">-</span>impl<span class="token operator">:</span> org<span class="token punctuation">.</span>apache<span class="token punctuation">.</span>ibatis<span class="token punctuation">.</span>logging<span class="token punctuation">.</span>stdout<span class="token punctuation">.</span>StdOutImpl
+		</code><ul class="pre-numbering"><li>1</li><li>2</li><li>3</li></ul><div class="code-top">                                <div class="left"><span>代码块</span><i class="imv2-code"></i></div>                                <div class="right">                                    <span class="preview">预览</span><span class="copy">复制<textarea type="text" class="code" style="width:1px;height:1px;"></textarea></span>                                    <div class="copysuccess hide">复制成功！</div>                                </div>                            </div></pre>
+		</div><div class="cl-preview-section"><p>此外我们也通过结合<code>aop</code>，监控每个Service的执行时间，如果执行时间过长，并且打印级别为<code>error</code>，那我们就需要针对这个Service做一定的优化了。</p>
+		</div><div class="cl-preview-section"><ol start="5">
+		<li>
+		<p>我们实现的下一个功能是首页轮播图，通过前端发起的rest请求，到达后端后，后端查询数据库中轮播图列表，再响应前端，这样前端就能拿到轮播图数据并进行渲染了。<br>
+		<img src="//climg.mukewang.com/5daff3cc0839169e09410421.jpg" alt="图片描述"></p>
+		</li>
+		<li>
+		<p>在轮播图左侧为商品的分类，分类表在课程中我们已经提过，他可以通过自连接来实现无限递归，如果有100级子分类的话，那么只要Sql写的够长，表关联够多，可以一级一级找下去。那么在首页里，我们参考了淘宝的做法，实现了一个懒加载模式，用户初次进入页面的时候，我们只会查询大分类，而只在用户把鼠标移到这个分类导航上，才会查询下级分类，加载完下级分类后，以后也不会再加载，这就是懒加载模式，这种模式在一些大型网站里其实用的都比较多，尤其是首页，因为数据量多，一次性加载完毕需要很久，减少初次查询可以大大提升用户访问体验。<br>
+		<img src="//climg.mukewang.com/5daff48b08b365e909550491.jpg" alt="图片描述"></p>
+		</li>
+		<li>
+		<p>处理分类我们使用了懒加载模式，下方的分类推荐新品也是如此，因为页面很长，没有必要一次性查询出来，所以只在浏览器滚动条触底以后才会加载下方的内容，这也是懒加载的体现（<code>lazy-load</code>），京东的大多数页面也是这么做的。<br>
+		<img src="//climg.mukewang.com/5daff4da08d2a25f12380632.jpg" alt="图片描述"></p>
+		</li>
+		<li>
+		<p>首页相关功能开发完毕后，我们就实现了商品详情页，该页面涉及到了商品相关表，如下：<br>
+		<img src="//climg.mukewang.com/5daff50208ea72a309610832.jpg" alt="图片描述"><br>
+		由于在页面里涉及到多种商品信息，所以我们都把他们分在了不同的表，主要有：商品表，商品图片表，商品规格表，商品参数表。那么在页面展示的时候，通过查询数据库则可以把商品数据查询并且封装响应给前端渲染即可。<br>
+		<img src="//climg.mukewang.com/5daff5360879924108670778.jpg" alt="图片描述"></p>
+		</li>
+		<li>
+		<p>在商品页面肯定缺少不了评价，所以我们实现了商品评价查询，并且会涉及到分页功能，分页功能我们通过MyBaits的插件<code>page-helper</code>就能实现：</p>
+		</li>
+		</ol>
+		</div><div class="cl-preview-section"><pre class="normal-code"><code>PageHelper.startPage(page, pageSize);
+		</code><ul class="pre-numbering"><li>1</li></ul><div class="code-top">                                <div class="left"><span>代码块</span><i class="imv2-code"></i></div>                                <div class="right">                                    <span class="preview">预览</span><span class="copy">复制<textarea type="text" class="code" style="width:1px;height:1px;"></textarea></span>                                    <div class="copysuccess hide">复制成功！</div>                                </div>                            </div></pre>
+		</div><div class="cl-preview-section"><p><img src="//climg.mukewang.com/5daff57f08b38e4806150445.jpg" alt="图片描述"></p>
+		</div><div class="cl-preview-section"><ol start="10">
+		<li>
+		<p>商品不仅可以单个查看，也能通过商品类别或关键字进行搜索，并且搜索列表按照每页20条记录展示，同理也是使用的MyBatis的插件<code>page-helper</code>，当然我们也要意识到，一个网站随着业务发展，数据量会越来越多，所以发展到一定阶段，我们需要重新评估未来至少半年的业务发展情况，从而评估是否需要重新评估技术选型，比如我们的项目发展到分布式阶段，会更新技术选型，采用<code>ElasticSearch</code>来对商品数据进行搜索，这种前瞻性的思维也正是架构师必备的思维。<br>
+		<img src="//climg.mukewang.com/5daff8100821f1ce12420835.jpg" alt="图片描述"></p>
+		</li>
+		<li>
+		<p>接下来是电商网站的核心内容，首先是购物车，购物车中的商品可在商品页一个或多个加入，加入后购物车的存储形式我们采用前端Cookie，后端会涉及分布式缓存Redis，但是因为Redis在我们的第一个阶段还没有学习到，所以需要等后续的Redis学习完后，我们会迭代完善这块购物车的内容，完善后，就可以实现登录后的购物车同步。在购物车中，不仅可以添加商品，也可以删除不需要的商品，随后在点选/全选商品后提交购物车至确认订单页面。<br>
+		<img src="//climg.mukewang.com/5daff8c60856c7a210320370.jpg" alt="图片描述"></p>
+		</li>
+		<li>
+		<p>当用户提交购物车后，在确认订单页面首先会需要用户选择一个收货地址，如果收货地址没有，则用户必须创建一个地址，否则无法提交，除了查询和新增外，用户还能修改和删除收货地址，并且可以通过设置默认地址让页面每次刷新的时候有一个默认选中的选项。<br>
+		<img src="//climg.mukewang.com/5daff92408a5f72705550224.jpg" alt="图片描述"></p>
+		</li>
+		<li>
+		<p>当用户选则某一个收货地址后，还需要确认当前订单信息，比如：金额对不对，然后再选则微信或者支付宝进行支付，这个时候当用户点击<code>提交订单</code>按钮后，就会跳转到微信或者支付宝支付页面了。那么提交订单后就会创建一个订单，当然还会有子订单，也就是商品订单关联表，因为商品会有多个，多个商品作为一个订单存在的嘛。并且在创建订单的同时我们会扣除商品的库存，由于减少库存是公用资源的操作，所以会涉及到锁的问题，我们在数据库中通过乐观锁的方式来进行控制，在后续课程中当我们学习了<code>分布式锁</code>，大家也可以用它来实现。<br>
+		那么从这个部分开始，就正式进入到订单流程了，订单的几个状态分为：<br>
+		<code>待付款</code>-&gt;<code>已付款，待发货</code>-&gt;<code>已发货，待收货</code>-&gt;<code>交易成功(或交易失败)</code><br>
+		<img src="//climg.mukewang.com/5daff9df0861fb3c03080256.jpg" alt="图片描述"></p>
+		</li>
+		<li>
+		<p>订单提交后进入到支付环节，我们可以通过微信或支付宝来实现支付，但是要支付，必须在支付中心生成订单，所以我们通过<code>RestTemplate</code>向支付中心发送在线购物平台的商户订单，这样就能在支付中心里创建订单了。在进行微信和支付宝支付之前，大家需要分别了解两张时序图，每个节点的流程是如何处理的，这样就可以对接了，虽然我们是提供的<code>支付中心</code>，但是大家以后有企业资质后，可以直接通过老师提供的源码，直接导入到项目里和自己的业务合并就能使用，如果移除<code>支付中心</code>的概念也是没有任何问题的，毕竟我们的<code>支付中心</code>的目的是提供给大家一起使用的~</p>
+		<ul>
+		<li>微信支付：发起请求到微信支付系统，生成预支付订单，获取二维码地址<code>code_url</code>，前端拿到后可以通过js生成一个二维码，此时用户可以通过手机微信扫描支付。支付成功后，微信支付系统会并行地向支付中心发起调用，成功后我们会返回success给微信端，并且通知在线购物平台把该笔订单状态改为<code>已支付</code>，这样微信支付流程就OK了。注：微信异步通知频率为15/15/30/180/1800/1800/1800/1800/3600，单位：秒。</li>
+		<li>支付宝支付：构建请求参数，以form表单的形式提交给支付宝，这个方式是同步跳转到支付宝收银台的，此时用户可以通过扫码或者登陆输入用户名密码来支付。支付成功后支付宝网关会向支付中心并行发起两个请求，一个同步，一个异步，再次强调支付是否成功要以异步为主，所以同步请求我们仅仅在接收后直接关闭页面即可；而异步请求接收到后需要获得参数并且判断支付状态是否为<code>TRADE_SUCCESS</code>，成功则可以标记订单为已支付，同理发送给在线购物平台通知修改订单状态。注：支付宝异步通知频率是8次，如果没有收到我们的成功通知“success”，则支付宝服务器会不断重发通知给我们，直到超过24小时22分钟。一般情况下，25小时以内完成8次通知（通知的间隔频率一般是：4m,10m,10m,1h,2h,6h,15h）</li>
+		</ul>
+		</li>
+		<li>
+		<p>最后，我们又讲了SpringBoot定时任务，通过job来关闭超时订单，但是这么做会有弊端：</p>
+		<ul>
+		<li>会有时间差，导致程序不严谨，不能准确恰到的关闭交易</li>
+		<li>不支持集群，会有多个相同定时任务同时存在，可以通过单节点提供定时任务服务解决</li>
+		<li>会对数据库全表搜索，极其影响数据库性能<br>
+		所以此场景只能适合小型轻量级项目，传统项目<br>
+		那么我们最终会通过消息队列中的延迟任务来做到订单自动实现，准时恰到好处，不会对数据库进行全表搜索，只需要判断当前的状态是否是未支付，是的话则直接关闭交易即可。</li>
+		</ul>
+		</li>
+		</ol>
+		</div>                             </div>                             </div>                                                   </div>  </div>  </div>
+		<div class="ps-scrollbar-x-rail" style="left: 0px; width: 1106px;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="top: 8840px; right: 8px; height: 891px;"><div class="ps-scrollbar-y" style="top: 810px; height: 81px;"></div></div><div class="cont-footer-imageText" style="position:relative"><a href="1224#mid=43996"><input type="button" value="下一节" class="r moco-btn moco-btn-purple"></a></div></div>
+	</body>
+</html>

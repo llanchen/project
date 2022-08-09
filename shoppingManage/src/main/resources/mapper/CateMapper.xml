@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.seehope.dao.CateMapper">
+    <select id="findCates" resultType="Cate">
+        select * from cate
+    </select>
+
+    <insert id="addCate" parameterType="cate">
+        insert into cate (id,cName) values (null,#{cName})
+    </insert>
+
+</mapper>
